@@ -25,9 +25,13 @@ def lambda_handler(event, context):
    #{ "<field name>" : "<value>" }
 #]
 
-    msg_map = dict(urlparse.parse_qsl(base64.b64decode(str(event['body'])).decode('ascii')))
+    print(type(event))
 
-    document_list = [{'test': str(event['body']) }]
+    #msg_map = dict(urlparse.parse_qsl(base64.b64decode(str(event)).decode('ascii')))
+
+
+
+    document_list = [{'test': str(event) }]
 
     result = collection.insert_many(document_list)
 
