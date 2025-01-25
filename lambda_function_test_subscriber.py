@@ -9,16 +9,16 @@ import base64
 
 mongodb_connexion_str = os.getenv('mongodb_connexion_string')
 
-mongo_client = MongoClient(mongodb_connexion_str, server_api=pymongo.server_api.ServerApi(
-    version="1", strict=True, deprecation_errors=True))
 
-database = mongo_client["llm_energy_impact"]
-
-collection = database["response"]
 
 def lambda_handler(event, context):
 
-    
+    mongo_client = MongoClient(mongodb_connexion_str, server_api=pymongo.server_api.ServerApi(
+    version="1", strict=True, deprecation_errors=True))
+
+    database = mongo_client["llm_energy_impact"]
+
+    collection = database["response"]
 
     #document_list = [
    #{ "<field name>" : "<value>" },

@@ -30,14 +30,6 @@ def lambda_handler(event, context):
 
     client = Anthropic(api_key=claude_access_key)
 
-    #mongo_client = MongoClient(mongodb_connexion_str, server_api=pymongo.server_api.ServerApi(
- #version="1", strict=True, deprecation_errors=True))
-
-    #database = client["llm_energy_impact"]
-
-    #collection = database["response"]
-
-    #client.close()
 
     response_dictionary = {}
 
@@ -47,18 +39,10 @@ def lambda_handler(event, context):
     model="claude-3-haiku-20240307",
 )
 
-    response_dictionary['claude'] = { 'ghg_emissions': str(claude_response.impacts.gwp.value),'energy_consumption': str(claude_response.impacts.energy.value)}
-
-
-    #print(claude_response)
+    response_dictionary['claude'] = { 'ghg_emissions': str(claude_response.impacts.gwp.value),'energy_consumption': str(claude_response.impacts.energy.value),'answer': str(claude_response.content[0].text)}
 
 
 
-
-    # Get estimated environmental impacts of the inference
-    #print("Claude 3 Haiku's energy consumption: ")
-    #print(f"Energy consumption: {claude_response.impacts.energy.value} kWh")
-    #print(f"GHG emissions: {claude_response.impacts.gwp.value} kgCO2eq")
 
     
 
@@ -69,19 +53,8 @@ def lambda_handler(event, context):
         {"role": "user", "content": "Tell me a funny joke!"}
     ]
 )
-    #print("ChatGPT's energy consumption: ")
-    #print(f"Energy consumption: {openai_response.impacts.energy.value} kWh")
-    #print(f"GHG emissions: {openai_response.impacts.gwp.value} kgCO2eq")
 
-    #client = InferenceClient(model="HuggingFaceH4/zephyr-7b-beta")
-    #response = client.chat_completion(
-    #messages=[{"role": "user", "content": "Tell me a funny joke!"}],
-    #max_tokens=15
-#)
-
-    #print(response)
-
-    response_dictionary['open_ai'] = {'ghg_emissions': str(openai_response.impacts.gwp.value),'energy_consumption': str(openai_response.impacts.energy.value)}
+    response_dictionary['open_ai'] = {'ghg_emissions': str(openai_response.impacts.gwp.value),'energy_consumption': str(openai_response.impacts.energy.value),'answer': str(openai_response.choices[0].message.content)}
 
     #resp = boto_client.invoke(
     #    FunctionName='arn:aws:lambda:us-east-1:406942271653:function:second_lambda_function_test_subscriber', #Arn of our second or asynchronous lambda
