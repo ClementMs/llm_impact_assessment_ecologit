@@ -27,15 +27,20 @@ mongodb_connexion_str = os.getenv('mongodb_connexion_string')
 def lambda_handler(event, context):
     EcoLogits.init()
 
+    payloads = str(event['body'])
+
+    print()
+
 
     client = Anthropic(api_key=claude_access_key)
 
 
     response_dictionary = {}
 
+    
     claude_response = client.messages.create(
     max_tokens=100,
-    messages=[{"role": "user", "content": "Tell me a funny joke!"}],
+    messages=[{"role": "user", "content": payloads }],
     model="claude-3-haiku-20240307",
 )
 
@@ -50,7 +55,7 @@ def lambda_handler(event, context):
     openai_response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role": "user", "content": "Tell me a funny joke!"}
+        {"role": "user", "content": payloads}
     ]
 )
 

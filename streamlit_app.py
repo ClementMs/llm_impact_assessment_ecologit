@@ -4,7 +4,9 @@ from langchain_openai.chat_models import ChatOpenAI
 from dotenv import load_dotenv
 import os
 import requests
-
+import time
+import pymongo
+from pymongo import MongoClient
 
 # Load the .env file
 load_dotenv()
@@ -12,6 +14,8 @@ load_dotenv()
 # Access the environmental variables
 openai_api_key = os.getenv('openai_api_key')
 claude_api_key = os.getenv('claude_api_key')
+mangodb_url = os.getenv('mangodb_url')
+
 
 st.title("🦜🔗 Quickstart App")
 
@@ -33,7 +37,16 @@ def generate_response(input_text):
     if True: 
         st.info('votre demande a été traitée')    
 
-
+def pull_answer():
+    time.sleep(15)
+    mongo_client = MongoClient(mangodb_url, server_api=pymongo.server_api.ServerApi(
+    version="1", strict=True, deprecation_errors=True))
+    database = mongo_client["llm_energy_impact"]
+    db = mongo_client["llm_energy_impact"]
+    collection = db["response"]
+    response = collection.find_one(sort= [('datetime', -1)])
+    st.info(response)
+    mongo_client.close()
 
 with st.form("my_form"):
     text = st.text_area(
@@ -43,6 +56,7 @@ with st.form("my_form"):
     submitted = st.form_submit_button("Submit")
     if submitted:
         generate_response(text)
+        pull_answer()
 
     #if not openai_api_key.startswith("sk-"):
     #    st.warning("Please enter your OpenAI API key!", icon="⚠")

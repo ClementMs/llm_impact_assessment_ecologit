@@ -6,6 +6,9 @@ import os
 
 from urllib import parse as urlparse
 import base64
+import time
+#import datetime
+#from datetime import datetime
 
 mongodb_connexion_str = os.getenv('mongodb_connexion_string')
 
@@ -20,18 +23,8 @@ def lambda_handler(event, context):
 
     collection = database["response"]
 
-    #document_list = [
-   #{ "<field name>" : "<value>" },
-   #{ "<field name>" : "<value>" }
-#]
 
-    print(type(event))
-
-    #msg_map = dict(urlparse.parse_qsl(base64.b64decode(str(event)).decode('ascii')))
-
-
-
-    document_list = [{'test': str(event) }]
+    document_list = [{'test': str(event) ,'datetime': str(time.time())}]
 
     result = collection.insert_many(document_list)
 
