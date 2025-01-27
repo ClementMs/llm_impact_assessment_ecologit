@@ -49,13 +49,6 @@ data = pd.DataFrame.from_dict([{'min_ghg_openai': openai_min_ghg, 'max_ghg_opena
                          'claude_response': claude_response,'openai_response': openai_response
                         }])
 
-data = pd.DataFrame.from_dict([{'min_ghg_openai': openai_min_ghg, 'max_ghg_openai': openai_max_ghg,
-                        'min_ghg_claude': claude_min_ghg, 'max_ghg_claude': claude_max_ghg,
-                         'min_energy_openai': openai_min_energy, 'max_energy_openai': openai_max_energy,
-                        'min_energy_claude': claude_min_energy, 'max_energy_claude': claude_max_energy,
-                         'claude_response': claude_response,'openai_response': openai_response
-                        }])
-
 
 client.insert('llm_responses_ecologits_methodology', data, column_names=['min_ghg_openai', 'max_ghg_openai', 'min_ghg_claude',
                                               'max_ghg_claude', 'min_energy_openai', 'max_energy_openai',
