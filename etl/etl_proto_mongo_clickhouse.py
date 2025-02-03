@@ -1,6 +1,7 @@
 import pandas as pd
 import pymongo
 from pymongo import MongoClient
+import clickhouse_connect
 
 mongodb_url = 'mongodb+srv://clementmsika:u6nDXiUZzzovT2Jp@serverlessinstance0.zhyp2im.mongodb.net/?retryWrites=true&w=majority&appName=ServerlessInstance0'
 
@@ -50,7 +51,16 @@ data = pd.DataFrame.from_dict([{'min_ghg_openai': openai_min_ghg, 'max_ghg_opena
                         }])
 
 
-client.insert('llm_responses_ecologits_methodology', data, column_names=['min_ghg_openai', 'max_ghg_openai', 'min_ghg_claude',
+clickhouse_client = clickhouse_connect.get_client(
+        host='tbkbrv1uvs.germanywestcentral.azure.clickhouse.cloud',
+        user='julian',
+        password='a',
+        secure=True
+    )
+
+
+
+clickhouse_client.insert('llm_responses_ecologits_methodology', data, column_names=['min_ghg_openai', 'max_ghg_openai', 'min_ghg_claude',
                                               'max_ghg_claude', 'min_energy_openai', 'max_energy_openai',
                                               'min_energy_claude', 'max_energy_claude', 'claude_response',
                                               'openai_response'])
